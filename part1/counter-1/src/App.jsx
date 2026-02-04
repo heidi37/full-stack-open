@@ -9,7 +9,6 @@ const App = () => {
     console.log('increasing, value before', counter)
     setCounter((prevState) => prevState + 1)
   }
-  
   const decreaseByOne = () => {
     console.log('decreasing, value before', counter)
     setCounter((prevState) => prevState - 1)
