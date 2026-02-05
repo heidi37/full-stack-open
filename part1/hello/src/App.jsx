@@ -1,4 +1,5 @@
 import { useState } from "react"
+import Button from "./Button"
 
 const App = () => {
   const [value, setValue] = useState(10)
@@ -12,9 +13,9 @@ const setToValue = (newValue) => {
   return (
     <div>
       {value}&nbsp;
-      <button onClick={() => setToValue(1000)}>thousand</button>
-      <button onClick={() => setToValue(0)}>reset</button>
-      <button onClick={() => setToValue((prev) => prev + 1)}>increment</button>
+      <Button onClick={() => setToValue(1000)} text="thousand"/>
+      <Button onClick={() => setToValue(0)} text="reset"/>
+      <Button onClick={() => setToValue(prev => prev + 1)} text="increment"/>
     </div>
   )
 }
