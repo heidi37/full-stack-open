@@ -60,7 +60,7 @@ const App = () => {
       </form>
       <h2>Numbers</h2>
       {persons.map((person) => {
-        if (person.name.includes(filter)) {
+        if (person.name.toLowerCase().includes(filter.toLowerCase())) {
           return (
             <p key={person.name}>{person.name}<br/>{person.number}</p>
           )
