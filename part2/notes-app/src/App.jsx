@@ -1,32 +1,22 @@
-import Note from "./components/Note"
 import { useState, useEffect } from "react"
+import axios from "axios"
+import Note from "./components/Note"
 
-
-const fetchNotes = async () => {
-  try {
-    const res = await fetch("http://localhost:3001/notes");
-    if (!res.ok) throw new Error(res.status);
-    return await res.json();
-  } catch (err) {
-    console.error(err);
-  }
-};
-
-const App = () => {
-
+const App = (props) => {
   const [notes, setNotes] = useState([])
   //The App component now controls the behavior of the input element
   const [newNote, setNewNote] = useState("a new note...")
   const [showAll, setShowAll] = useState(false)
 
   useEffect(() => {
-    const getNotes = async () => {
-      const data = await fetchNotes();
-      if (data) setNotes(data);
-    };
+    console.log("effect")
+    axios.get("http://localhost:3001/notes").then((response) => {
+      console.log("promise fulfilled")
+      setNotes(response.data)
+    })
+  }, [])
 
-    getNotes();
-  }, []);
+  console.log("render", notes.length, "notes")
 
   const handleNoteChange = (event) => {
     setNewNote(event.target.value)
@@ -53,7 +43,7 @@ const App = () => {
     <div>
       <h1>Notes</h1>
       <div>
-        <button onClick={() => setShowAll(prev => !prev)}>
+        <button onClick={() => setShowAll((prev) => !prev)}>
           show {showAll ? "important" : "all"}
         </button>
       </div>
