@@ -1,11 +1,32 @@
 import Note from "./components/Note"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
-const App = (props) => {
-  const [notes, setNotes] = useState(props.notesList)
+
+const fetchNotes = async () => {
+  try {
+    const res = await fetch("http://localhost:3001/notes");
+    if (!res.ok) throw new Error(res.status);
+    return await res.json();
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+const App = () => {
+
+  const [notes, setNotes] = useState([])
   //The App component now controls the behavior of the input element
   const [newNote, setNewNote] = useState("a new note...")
   const [showAll, setShowAll] = useState(false)
+
+  useEffect(() => {
+    const getNotes = async () => {
+      const data = await fetchNotes();
+      if (data) setNotes(data);
+    };
+
+    getNotes();
+  }, []);
 
   const handleNoteChange = (event) => {
     setNewNote(event.target.value)
@@ -14,7 +35,6 @@ const App = (props) => {
   const addNote = (event) => {
     event.preventDefault()
     setNotes((prev) => {
-      console.log("prev notes: ", prev)
       return [
         ...prev,
         {
