@@ -24,6 +24,16 @@
       "id": "f1c3",
       "content": "PREV is better",
       "important": false
+    },
+    {
+      "id": "b539",
+      "content": "I'm new!",
+      "important": true
+    },
+    {
+      "id": "7102",
+      "content": "test",
+      "important": false
     }
   ]
 }
