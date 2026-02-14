@@ -4,7 +4,7 @@ const baseUrl = 'http://localhost:3001/notes'
 const getAll = () => {
   const request = axios.get(baseUrl)
   //return just the data no the whole http response
-  //We no longer return the promise returned by axios directly. Instead, we assign the promise to the request variable and call its then method:
+  //We no longer return the promise returned by axios directly. Instead, we assign the promise to the request variable and call its then method
   return request.then(response => response.data)
 }
 
@@ -19,7 +19,7 @@ const update = (id, newObject) => {
 }
 
 export default { 
-  getAll: getAll, 
-  create: create, 
-  update: update 
+  getAll, 
+  create, 
+  update 
 }

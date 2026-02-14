@@ -28,7 +28,7 @@
     {
       "id": "b539",
       "content": "I'm new!",
-      "important": true
+      "important": false
     },
     {
       "id": "7102",
@@ -38,7 +38,7 @@
     {
       "id": "18f2",
       "content": "working?",
-      "important": false
+      "important": true
     }
   ]
 }
