@@ -11,7 +11,6 @@ const App = () => {
   const [filter, setFilter] = useState("")
 
   useEffect(() => {
-    console.log("effect")
     axios.get("http://localhost:3001/persons").then((response) => {
       setPersons(response.data)
     })
@@ -35,11 +34,21 @@ const App = () => {
       alert(`${newName} is already added to the phonebook.`)
       return
     }
-    setPersons((prev) => {
-      return [...prev, { name: newName, number: newNumber }]
-    })
-    setNewName("")
-    setNewNumber("")
+    //Add post to database use event id
+    const personObject = {
+      name: newName,
+      number: newNumber,
+    }
+
+    axios
+      .post("http://localhost:3001/persons", personObject)
+      .then((response) => {
+        setPersons((prev) => {
+          return [...prev, { ...personObject }]
+        })
+        setNewName("")
+        setNewNumber("")
+      })
   }
 
   return (
