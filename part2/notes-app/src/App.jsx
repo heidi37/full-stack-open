@@ -1,12 +1,14 @@
 import { useState, useEffect } from "react"
 import noteService from "./services/notes"
 import Note from "./components/Note"
+import Notification from "./components/Notification"
 
 const App = (props) => {
   const [notes, setNotes] = useState([])
   //The App component now controls the behavior of the input element
   const [newNote, setNewNote] = useState("")
   const [showAll, setShowAll] = useState(false)
+  const [errorMessage, setErrorMessage] = useState(null)
 
   useEffect(() => {
     noteService.getAll().then((initialNotes) => {
@@ -43,14 +45,19 @@ const App = (props) => {
         setNotes(notes.map((note) => (note.id === id ? returnedNote : note)))
       })
       .catch((error) => {
-        alert(`the note '${note.content}' was already deleted from server`)
-        setNotes(notes.filter((n) => n.id !== id))
+        setErrorMessage(
+          `Note '${note.content}' was already removed from server`
+        )
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
       })
   }
 
   return (
     <div>
       <h1>Notes</h1>
+      {errorMessage && <Notification message={errorMessage} />}
       <div>
         <button onClick={() => setShowAll((prev) => !prev)}>
           show {showAll ? "important" : "all"}
