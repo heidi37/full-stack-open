@@ -40,14 +40,21 @@ const App = () => {
       number: newNumber,
     }
 
-    personService.create(personObject)
-      .then((returnedPerson) => {
-        setPersons((prev) => {
-          return [...prev, { ...returnedPerson }]
-        })
-        setNewName("")
-        setNewNumber("")
+    personService.create(personObject).then((returnedPerson) => {
+      setPersons((prev) => {
+        return [...prev, { ...returnedPerson }]
       })
+      setNewName("")
+      setNewNumber("")
+    })
+  }
+
+  const handleDelete = (person) => {
+    if (window.confirm(`Delete ${person.name}?`)) {
+      personService.deleteObj(person.id).then(() => {
+        setPersons(persons.filter((p) => p.id !== person.id))
+      })
+    }
   }
 
   return (
@@ -63,7 +70,7 @@ const App = () => {
         onChangeNumber={handleChangeNumber}
       />
       <h2>Numbers</h2>
-      <Persons persons={persons} filter={filter} />
+      <Persons persons={persons} filter={filter} handleDelete={handleDelete} />
     </div>
   )
 }
