@@ -12,6 +12,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState("")
   const [filter, setFilter] = useState("")
   const [successMessage, setSuccessMessage] = useState(null)
+  const [successStatus, setSuccessStatus] = useState(null)
 
   useEffect(() => {
     personService.getAll().then((initialPersons) => {
@@ -56,12 +57,25 @@ const App = () => {
                 person.id === existingPerson.id ? returnedPerson : person,
               ),
             )
+            setSuccessStatus("success")
             setSuccessMessage(`${existingPerson.name} was successfully updated`)
             setTimeout(() => {
               setSuccessMessage(null)
             }, 5000)
             setNewName("")
             setNewNumber("")
+          })
+          .catch((error) => {
+            setSuccessStatus("error")
+            setSuccessMessage(
+              `Information of ${existingPerson.name} has already been deleted.`,
+            )
+            setTimeout(() => {
+              setSuccessMessage(null)
+              setNewName("")
+              setNewNumber("")
+              setPersons(persons.filter((p) => p.id !== existingPerson.id))
+            }, 5000)
           })
       }
       return
@@ -71,6 +85,7 @@ const App = () => {
       setPersons((prev) => {
         return [...prev, { ...returnedPerson }]
       })
+      setSuccessStatus("success")
       setSuccessMessage(`${newName} was successfully added`)
       setTimeout(() => {
         setSuccessMessage(null)
@@ -83,7 +98,12 @@ const App = () => {
   const handleDelete = (person) => {
     if (window.confirm(`Delete ${person.name}?`)) {
       personService.deleteObj(person.id).then(() => {
-        setPersons(persons.filter((p) => p.id !== person.id))
+        setSuccessStatus("success")
+        setSuccessMessage(`${person.name} was successfully deleted`)
+        setTimeout(() => {
+          setSuccessMessage(null)
+          setPersons(persons.filter((p) => p.id !== person.id))
+        }, 5000)
       })
     }
   }
@@ -91,7 +111,12 @@ const App = () => {
   return (
     <div>
       <h1>Phonebook</h1>
-      {successMessage && <Notification message={successMessage} />}
+      {successMessage && (
+        <Notification
+          successStatusClass={successStatus}
+          message={successMessage}
+        />
+      )}
       <Filter onChange={handleChangeFilter} filter={filter} />
       <h2>Add a new</h2>
       <PersonForm
