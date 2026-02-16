@@ -1,21 +1,25 @@
 import { useState, useEffect } from 'react'
 import countryService from './services/countries'
+import FilteredCountriesList from './components/FilteredCountriesList'
 
 function App() {
   const [countries, setCountries] = useState(null)
-  
-  // useEffect(() => {
-  //   countryService.getAll().then((initialCountries) => {
-  //     console.log(initialCountries.filter(country => country.includes))
-  //   })
-  // }, [countries])
-  console.log(countries)
+  const [filteredCountries, setFilteredCountries] = useState(null)
+  const [selectedCountry, setSelectedCountry] = useState(null)
 
-  const handleChange = function(event){
+  
+  console.log("outer ALL countries", countries)
+
+  useEffect(() => {
     countryService.getAll().then((allCountries) => {
-      const results = allCountries.filter(country => country.name.common.includes(event.target.value))
-      setCountries(results.map(result => result.name.common))
+      setCountries(allCountries)
     })
+  }, [])
+
+  const handleChange = (event) => {
+    console.log("Changed", event.target.value)
+    setFilteredCountries(countries.filter(country => country.name.common.includes(event.target.value)))
+    console.log("countries:", filteredCountries)
   }
 
   return (
@@ -23,9 +27,10 @@ function App() {
       <h1>Countries</h1>
       <label htmlFor="findField">Find Countries:</label>
       <input type="text" id="findField" onChange={handleChange}></input>
-      {countries && Object.keys(countries).length <= 10 && countries.map(country => <p key={countries.indexOf(country)}>{country}</p>)}
-      {countries && Object.keys(countries).length > 10 ? <p>Too many results. Be more specific.</p> : ""}
-      {/* {countries && Object.keys(countries).length === 1 ? <img src={countries[0].flags.png} alt={countries[0].flags.alt} /> : ""} */}
+      {filteredCountries &&
+      <FilteredCountriesList filteredCountries={filteredCountries} />
+      }
+
     </>
   )
 }
