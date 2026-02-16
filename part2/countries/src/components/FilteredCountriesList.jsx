@@ -1,5 +1,4 @@
 const FilteredCountriesList = ( {filteredCountries} ) => {
-  console.log("Filtered Countries in Component", filteredCountries)
 
   return (
     <div>
