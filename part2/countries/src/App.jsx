@@ -4,9 +4,11 @@ import FilteredCountriesList from './components/FilteredCountriesList'
 import SelectedCountryInfo from './components/SelectedCountryInfo'
 
 function App() {
-  const [countries, setCountries] = useState(null)
-  const [filteredCountries, setFilteredCountries] = useState(null)
+  const [countries, setCountries] = useState([])
+  const [filteredValue, setFilteredValue] = useState([])
   const [selectedCountry, setSelectedCountry] = useState(null)
+
+  const filteredCountries = countries.filter(country => country.name.common.includes(filteredValue))
 
   useEffect(() => {
     countryService.getAll().then((allCountries) => {
@@ -16,7 +18,6 @@ function App() {
 
   useEffect(() => {
     if (filteredCountries && filteredCountries.length === 1){
-      // setSelectedCountry(filteredCountries[0].name.common)
       countryService.getOne(filteredCountries[0].name.common).then((country) => {
         setSelectedCountry(country)
       })
@@ -26,7 +27,7 @@ function App() {
   }, [filteredCountries])
 
   const handleChange = (event) => {
-    setFilteredCountries(countries.filter(country => country.name.common.includes(event.target.value)))
+    setFilteredValue(event.target.value)
   }
 
   return (
