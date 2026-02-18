@@ -1,10 +1,26 @@
-const FilteredCountriesList = ( {filteredCountries} ) => {
+const FilteredCountriesList = ({ filteredCountries, setFilteredValue }) => {
+  const handleClick = (countryName) => {
+    setFilteredValue(countryName)
+  }
 
-  return (
-    <div>
-      {filteredCountries.length < 10 && filteredCountries.length >= 1 ? filteredCountries.map(country => <p key={country.name.common}>{country.name.common}</p>) : "Please enter a more specific search."}
-    </div>
-  )
+  console.log(filteredCountries.length)
+
+  let message
+
+  if (filteredCountries.length === 0) {
+    message = ""
+  } else if (filteredCountries.length > 10) {
+    message = "Please enter a more specific search."
+  } else {
+    message = filteredCountries.map((country) => (
+      <p key={country.name.common}>
+        {country.flag} {country.name.common}{" "}
+        <button onClick={() => handleClick(country.name.common)}>Show</button>
+      </p>
+    ))
+  }
+
+  return <div>{message}</div>
 }
 
 export default FilteredCountriesList

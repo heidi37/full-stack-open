@@ -5,10 +5,10 @@ const SelectedCountryInfo = ( {selectedCountry} ) => {
   
   return (
     <div>
-      <h1>{selectedCountry.name.common}</h1>
+      <h2>{selectedCountry.name.common}</h2>
       <p>Capital: {selectedCountry.capital}</p>
       <p>Area: {selectedCountry.area}</p>
-      <h2>Languages</h2>
+      <h3>Languages</h3>
       <ul>
       {languageArray.map(language => <li key={language}>{language}</li>)}
       </ul>

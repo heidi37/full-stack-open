@@ -36,7 +36,7 @@ function App() {
       <label htmlFor="findField">Find Countries:</label>
       <input type="text" id="findField" onChange={handleChange}></input>
       {!selectedCountry && filteredCountries &&
-      <FilteredCountriesList filteredCountries={filteredCountries} />
+      <FilteredCountriesList filteredCountries={filteredCountries} setFilteredValue={setFilteredValue} />
       }
       {selectedCountry && <SelectedCountryInfo selectedCountry={selectedCountry} />}
     </>
