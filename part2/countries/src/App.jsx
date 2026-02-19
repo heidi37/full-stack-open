@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import countryService from './services/countries'
 import FilteredCountriesList from './components/FilteredCountriesList'
 import SelectedCountryInfo from './components/SelectedCountryInfo'
+import CountryWeather from './components/CountryWeather'
 
 function App() {
   const [countries, setCountries] = useState([])
@@ -18,9 +19,7 @@ function App() {
 
   useEffect(() => {
     if (filteredCountries && filteredCountries.length === 1){
-      countryService.getOne(filteredCountries[0].name.common).then((country) => {
-        setSelectedCountry(country)
-      })
+      setSelectedCountry(filteredCountries[0])
     } else {
       setSelectedCountry(null)
     }
@@ -29,6 +28,8 @@ function App() {
   const handleChange = (event) => {
     setFilteredValue(event.target.value)
   }
+
+  console.log(selectedCountry)
 
   return (
     <>
@@ -39,6 +40,7 @@ function App() {
       <FilteredCountriesList filteredCountries={filteredCountries} setFilteredValue={setFilteredValue} />
       }
       {selectedCountry && <SelectedCountryInfo selectedCountry={selectedCountry} />}
+      {selectedCountry && <CountryWeather lat={selectedCountry.latlng[0]} lng={selectedCountry.latlng[1]}/>}
     </>
   )
 }
