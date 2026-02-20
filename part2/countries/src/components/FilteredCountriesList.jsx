@@ -3,8 +3,6 @@ const FilteredCountriesList = ({ filteredCountries, setFilteredValue }) => {
     setFilteredValue(countryName)
   }
 
-  console.log(filteredCountries.length)
-
   let message
 
   if (filteredCountries.length === 0) {

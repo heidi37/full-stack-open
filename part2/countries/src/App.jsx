@@ -29,18 +29,15 @@ function App() {
     setFilteredValue(event.target.value)
   }
 
-  console.log(selectedCountry)
-
   return (
     <>
-      <h1>Countries</h1>
       <label htmlFor="findField">Find Countries:</label>
       <input type="text" id="findField" onChange={handleChange}></input>
       {!selectedCountry && filteredCountries &&
       <FilteredCountriesList filteredCountries={filteredCountries} setFilteredValue={setFilteredValue} />
       }
       {selectedCountry && <SelectedCountryInfo selectedCountry={selectedCountry} />}
-      {selectedCountry && <CountryWeather lat={selectedCountry.latlng[0]} lng={selectedCountry.latlng[1]}/>}
+      {selectedCountry && <CountryWeather capital={selectedCountry.capital[0]} lat={selectedCountry.capitalInfo.latlng[0]} lng={selectedCountry.capitalInfo.latlng[1]}/>}
     </>
   )
 }

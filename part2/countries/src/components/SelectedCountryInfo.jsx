@@ -1,14 +1,14 @@
 const SelectedCountryInfo = ( {selectedCountry} ) => {
 
-  const languageArray = Object.values(selectedCountry.languages);
+  const languageArray = selectedCountry.languages ? Object.values(selectedCountry.languages) : ["none"];
 
   
   return (
     <div>
-      <h2>{selectedCountry.name.common}</h2>
-      <p>Capital: {selectedCountry.capital}</p>
-      <p>Area: {selectedCountry.area}</p>
-      <h3>Languages</h3>
+      <h1>{selectedCountry.name.common}</h1>
+      <p>Capital: {selectedCountry.capital}
+      <br/>Area: {selectedCountry.area}</p>
+      <h2>Languages</h2>
       <ul>
       {languageArray.map(language => <li key={language}>{language}</li>)}
       </ul>
