@@ -29,11 +29,18 @@ app.post('/api/persons', (request, response) => {
   }
   const body = request.body
 
-  if (!body.name) {
+  if (!body.name || !body.number) {
     return response.status(400).json({ 
       error: 'content missing' 
     })
   }
+
+ const exists = db.persons.find(person => person.name === body.name)
+ if (exists) {
+    return response.status(400).json({ 
+      error: 'name must be unique' 
+    })
+ }
 
   const person = {
     name: body.name,
