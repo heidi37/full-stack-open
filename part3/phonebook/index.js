@@ -23,6 +23,13 @@ app.get('/info', (request, response) => {
   response.send('<p>Phonebook has info for ' + db.persons.length + ' people</p>' + new Date().toString())
 })
 
+app.delete('/api/persons/:id', (request, response) => {
+  const id = request.params.id
+  db.persons = db.persons.filter(person => person.id !== id)
+
+  response.status(204).end()
+})
+
 const PORT = 3001
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
