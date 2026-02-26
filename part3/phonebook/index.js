@@ -3,16 +3,11 @@ const db = require("./db.json")
 const express = require('express')
 const app = express()
 
-const requestLogger = (request, response, next) => {
-  console.log('Method:', request.method)
-  console.log('Path:  ', request.path)
-  console.log('Body:  ', request.body)
-  console.log('---')
-  next()
-}
+var morgan = require('morgan')
 
 app.use(express.json())
-app.use(requestLogger)
+app.use(morgan('combined'))
+
 
 app.get('/api/persons', (request, response) => {
   response.json(db)
@@ -68,6 +63,8 @@ app.delete('/api/persons/:id', (request, response) => {
 
   response.status(204).end()
 })
+
+morgan('tiny')
 
 const PORT = 3001
 app.listen(PORT, () => {
