@@ -29,6 +29,16 @@ app.get('/api/persons', (request, response) => {
   response.json(data);
 })
 
+app.get('/api/persons/:id', (request, response) => {
+  const id = request.params.id
+  const person = data.find(resource => id === resource.id)
+  if (person) {
+    response.json(person)
+  } else {
+    response.status(404).end()
+  }
+})
+
 app.get('/info', (request, response) => {
   const now = new Date();
   response.send(`
