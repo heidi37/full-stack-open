@@ -1,6 +1,26 @@
 const express = require('express')
 const app = express()
 app.use(express.json())
+var morgan = require('morgan')
+
+// const requestLogger = (request, response, next) => {
+//   console.log('Method:', request.method)
+//   console.log('Path:  ', request.path)
+//   console.log('Body:  ', request.body)
+//   console.log('---')
+//   next()
+// }
+
+// app.use(requestLogger)
+
+
+morgan.token('type', function (req, res) {
+  return JSON.stringify(req.body)
+})
+
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :type'))
+
+
 
 data = [
     { 
@@ -79,6 +99,12 @@ app.delete('/api/persons/:id', (request, response) => {
     response.status(404).end()
   }
 })
+
+const unknownEndpoint = (request, response) => {
+  response.status(404).send({ error: 'unknown endpoint' })
+}
+
+app.use(unknownEndpoint)
 
 //Starts the server with app.listen()
 const PORT = 3001
