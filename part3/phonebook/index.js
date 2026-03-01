@@ -46,6 +46,30 @@ app.get('/info', (request, response) => {
     <p>${now.toString()}</p>`)
 })
 
+app.post('/api/persons', (request, response) => {
+  const body = request.body
+
+  if (!body.name || !body.number) {
+    return response.status(400).json({ 
+      error: 'content missing' 
+    })
+  }
+
+  if (data.find(person => person.name === body.name)) {
+    return response.status(400).json({
+      error: 'name must be unique' 
+    })
+  }
+
+  const person = {
+    id: Math.floor(Math.random() * 10000) + 1,
+    person: body.name,
+    number: body.number
+  }
+  data = data.concat(person)
+  response.json(person)
+})
+
 app.delete('/api/persons/:id', (request, response) => {
   const id = request.params.id
   data = data.filter(resource => id !== resource.id)
