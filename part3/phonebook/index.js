@@ -46,6 +46,16 @@ app.get('/info', (request, response) => {
     <p>${now.toString()}</p>`)
 })
 
+app.delete('/api/persons/:id', (request, response) => {
+  const id = request.params.id
+  data = data.filter(resource => id !== resource.id)
+  if (id) {
+    response.status(204).end()
+  } else {
+    response.status(404).end()
+  }
+})
+
 //Starts the server with app.listen()
 const PORT = 3001
 app.listen(PORT, () => {
