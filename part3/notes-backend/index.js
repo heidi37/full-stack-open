@@ -9,6 +9,8 @@ const cors = require('cors')
 
 app.use(cors())
 
+app.use(express.static('dist'))
+
 
 //Sets up middleware (like JSON parsing, CORS, logging)
 
@@ -34,7 +36,7 @@ let notes = [
 //the second response parameter is used to define how the request is responded to
 app.get('/', (request, response) => {
   //the request is answered by using the send method of the response object.
-  response.send('<h1>Hello World!!!</h1>')
+  response.send('<h1>Hello People!!!</h1>')
 })
 
 app.get('/api/notes', (request, response) => {
