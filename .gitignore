@@ -2,7 +2,7 @@
 node_modules/
 
 # Build outputs
-notes-frontend/dist/
+part3/notes-frontend/dist/
 build/
 
 # Logs
