@@ -10,7 +10,6 @@ const cors = require('cors')
 app.use(cors())
 
 
-
 //Sets up middleware (like JSON parsing, CORS, logging)
 
 let notes = [
@@ -33,6 +32,7 @@ let notes = [
 //Defines routes (or imports route files)
 //The first request parameter contains all of the information of the HTTP request
 //the second response parameter is used to define how the request is responded to
+
 
 app.get('/api/notes', (request, response) => {
   //The request is responded to with the json method of the response object
@@ -86,6 +86,11 @@ app.delete('/api/notes/:id', (request, response) => {
 })
 
 app.use(express.static('dist'))
+
+app.get('/', (request, response) => {
+  //the request is answered by using the send method of the response object.
+  response.send('<h1>Hello People!!!</h1>')
+})
 
 //Starts the server with app.listen()
 const PORT = process.env.PORT || 3001
