@@ -5,11 +5,6 @@ const express = require('express')
 const app = express()
 app.use(express.json())
 
-const cors = require('cors')
-
-app.use(cors())
-
-
 //Sets up middleware (like JSON parsing, CORS, logging)
 
 let notes = [
