@@ -2,6 +2,7 @@ import axios from 'axios'
 const baseUrl = '/api/notes'
 
 //api logic
+//constructs the request URL that will match the routes defined in Express.
 
 const getAll = () => {
   const request = axios.get(baseUrl)
