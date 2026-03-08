@@ -3,6 +3,7 @@ node_modules/
 
 # Build outputs
 part3/notes-frontend/dist/
+part3/phonebook-frontend/dist/
 build/
 
 # Logs
