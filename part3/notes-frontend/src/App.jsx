@@ -34,6 +34,10 @@ const App = (props) => {
     })
   }
 
+  const deleteNote = (note) => {
+    noteService.deleteObj(note.id).then(setNotes(notes.filter((n) => n.id !== note.id)))
+  }
+
   const notesToShow = showAll ? notes : notes.filter((note) => note.important)
 
   const toggleImportanceOf = (id) => {
@@ -70,6 +74,7 @@ const App = (props) => {
             key={note.id}
             note={note}
             toggleImportance={() => toggleImportanceOf(note.id)}
+            deleteNote = {deleteNote}
           />
         ))}
       </ul>
