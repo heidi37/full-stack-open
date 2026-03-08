@@ -8,10 +8,7 @@ const url = process.env.MONGODB_URI
 
 mongoose.set('strictQuery',false)
 
-mongoose.connect(url, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true, // ensures proper TLS handling
-})
+mongoose.connect(url)
 .then(() => console.log('connected to MongoDB'))
 .catch(err => console.error('error connecting to MongoDB:', err.message))
 
