@@ -1,7 +1,11 @@
+require('dotenv').config()
 const express = require('express')
 const app = express()
-app.use(express.json())
 var morgan = require('morgan')
+
+const Person = require('./models/person')
+
+let persons = []
 
 // const requestLogger = (request, response, next) => {
 //   console.log('Method:', request.method)
@@ -18,40 +22,26 @@ morgan.token('type', function (req, res) {
   return JSON.stringify(req.body)
 })
 
+app.use(express.json())
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :type'))
+app.use(express.static('dist'))
 
-
-
-data = [
-    { 
-      "id": "1",
-      "name": "Arto Hellas", 
-      "number": "040-123456"
-    },
-    { 
-      "id": "2",
-      "name": "Ada Lovelace", 
-      "number": "39-44-5323523"
-    },
-    { 
-      "id": "3",
-      "name": "Dan Abramov", 
-      "number": "12-43-234345"
-    },
-    { 
-      "id": "4",
-      "name": "Mary Poppendieck", 
-      "number": "39-23-6423122"
-    }
-]
 
 app.get('/api/persons', (request, response) => {
-  response.json(data);
+  Person.find({}).then(persons => {
+    response.json(persons)
+  })
+})
+
+app.get('/api/notes', (request, response) => {
+  Note.find({}).then(notes => {
+    response.json(notes)
+  })
 })
 
 app.get('/api/persons/:id', (request, response) => {
   const id = request.params.id
-  const person = data.find(resource => id === resource.id)
+  const person = persons.find(resource => id === resource.id)
   if (person) {
     response.json(person)
   } else {
@@ -75,7 +65,7 @@ app.post('/api/persons', (request, response) => {
     })
   }
 
-  if (data.find(person => person.name === body.name)) {
+  if (persons.find(person => person.name === body.name)) {
     return response.status(400).json({
       error: 'name must be unique' 
     })
@@ -86,13 +76,13 @@ app.post('/api/persons', (request, response) => {
     name: body.name,
     number: body.number
   }
-  data = data.concat(person)
+  persons = persons.concat(person)
   response.json(person)
 })
 
 app.delete('/api/persons/:id', (request, response) => {
   const id = request.params.id
-  data = data.filter(resource => id !== resource.id)
+  persons = persons.filter(resource => id !== resource.id)
   if (id) {
     response.status(204).end()
   } else {
@@ -104,7 +94,6 @@ const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: 'unknown endpoint' })
 }
 
-app.use(express.static('dist'))
 app.use(unknownEndpoint)
 
 //Starts the server with app.listen()
