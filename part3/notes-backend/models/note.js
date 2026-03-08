@@ -8,7 +8,12 @@ const url = process.env.MONGODB_URI
 
 mongoose.set('strictQuery',false)
 
-mongoose.connect(url, { family: 4 })
+mongoose.connect(url, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true, // ensures proper TLS handling
+})
+.then(() => console.log('connected to MongoDB'))
+.catch(err => console.error('error connecting to MongoDB:', err.message))
 
 const noteSchema = new mongoose.Schema({
   content: String,
