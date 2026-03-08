@@ -33,12 +33,6 @@ app.get('/api/persons', (request, response) => {
   })
 })
 
-app.get('/api/notes', (request, response) => {
-  Note.find({}).then(notes => {
-    response.json(notes)
-  })
-})
-
 app.get('/api/persons/:id', (request, response) => {
   const id = request.params.id
   const person = persons.find(resource => id === resource.id)
@@ -52,7 +46,7 @@ app.get('/api/persons/:id', (request, response) => {
 app.get('/info', (request, response) => {
   const now = new Date();
   response.send(`
-    <p>Phonebook has info for ${data.length} people<p>
+    <p>Phonebook has info for ${Person.length} people<p>
     <p>${now.toString()}</p>`)
 })
 
@@ -71,13 +65,14 @@ app.post('/api/persons', (request, response) => {
     })
   }
 
-  const person = {
-    id: Math.floor(Math.random() * 10000) + 1,
+  const person = new Person({
     name: body.name,
     number: body.number
-  }
-  persons = persons.concat(person)
-  response.json(person)
+  })
+
+  person.save().then(savedPerson => {
+      response.json(savedPerson);
+    })
 })
 
 app.delete('/api/persons/:id', (request, response) => {
@@ -97,7 +92,7 @@ const unknownEndpoint = (request, response) => {
 app.use(unknownEndpoint)
 
 //Starts the server with app.listen()
-const PORT = process.env.PORT || 3001
+const PORT = process.env.PORT
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
