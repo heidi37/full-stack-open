@@ -1,37 +1,26 @@
-//Imports Express 
-
+//Imports
 const express = require('express')
+const Note = require('./models/note')
+
 //Creates the Express app - a function that is used to create an Express application stored in the app variable:
 const app = express()
-app.use(express.json())
 
 //Sets up middleware (like JSON parsing, CORS, logging)
+app.use(express.json())
 
-let notes = [
-  {
-    id: "1",
-    content: "HTML is easy",
-    important: true
-  },
-  {
-    id: "2",
-    content: "Browser can execute only JavaScript",
-    important: false
-  },
-  {
-    id: "3",
-    content: "GET and POST are the most important methods of HTTP protocol",
-    important: true
-  }
-]
 //Defines routes (or imports route files)
 //The first request parameter contains all of the information of the HTTP request
 //the second response parameter is used to define how the request is responded to
 
+// app.get('/api/notes', (request, response) => {
+//   //The request is responded to with the json method of the response object
+//   response.json(notes)
+// })
 
 app.get('/api/notes', (request, response) => {
-  //The request is responded to with the json method of the response object
-  response.json(notes)
+  Note.find({}).then(notes => {
+    response.json(notes)
+  })
 })
 
 app.get('/api/notes/:id', (request, response) => {
