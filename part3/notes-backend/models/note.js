@@ -3,7 +3,6 @@ const mongoose = require('mongoose')
 //connect to MongoDB
 const password = process.argv[2]
 
-//const url = `mongodb+srv://hfryzell_db_user:${password}@cluster0.uwclkmr.mongodb.net/noteApp?retryWrites=true&w=majority&appName=Cluster0`
 const url = process.env.MONGODB_URI
 
 mongoose.set('strictQuery',false)
