@@ -1,9 +1,9 @@
-require('dotenv').config()
-const express = require('express')
+require("dotenv").config()
+const express = require("express")
 const app = express()
-var morgan = require('morgan')
+var morgan = require("morgan")
 
-const Person = require('./models/person')
+const Person = require("./models/person")
 
 let persons = []
 
@@ -17,67 +17,68 @@ let persons = []
 
 // app.use(requestLogger)
 
-
-morgan.token('type', function (req, res) {
+morgan.token("type", function (req, res) {
   return JSON.stringify(req.body)
 })
 
 app.use(express.json())
-app.use(morgan(':method :url :status :res[content-length] - :response-time ms :type'))
-app.use(express.static('dist'))
+app.use(
+  morgan(":method :url :status :res[content-length] - :response-time ms :type"),
+)
+app.use(express.static("dist"))
 
-
-app.get('/api/persons', (request, response) => {
-  Person.find({}).then(persons => {
+app.get("/api/persons", (request, response) => {
+  Person.find({}).then((persons) => {
     response.json(persons)
   })
 })
 
-app.get('/api/persons/:id', (request, response) => {
+app.get("/api/persons/:id", (request, response) => {
   const id = request.params.id
-  const person = persons.find(resource => id === resource.id)
-  if (person) {
-    response.json(person)
-  } else {
-    response.status(404).end()
-  }
+  const person = Person.findById(id).then((person) => {
+    if (person) {
+      response.json(person)
+    } else {
+      response.status(404).end()
+    }
+  })
 })
 
-app.get('/info', (request, response) => {
-  const now = new Date();
+app.get("/info", (request, response) => {
+  const now = new Date()
   response.send(`
     <p>Phonebook has info for ${Person.length} people<p>
     <p>${now.toString()}</p>`)
 })
 
-app.post('/api/persons', (request, response) => {
+app.post("/api/persons", (request, response) => {
   const body = request.body
 
   if (!body.name || !body.number) {
-    return response.status(400).json({ 
-      error: 'content missing' 
+    return response.status(400).json({
+      error: "content missing",
     })
   }
 
-  if (persons.find(person => person.name === body.name)) {
+  if (persons.find((person) => person.name === body.name)) {
     return response.status(400).json({
-      error: 'name must be unique' 
+      error: "name must be unique",
     })
   }
 
   const person = new Person({
     name: body.name,
-    number: body.number
+    number: body.number,
   })
 
-  person.save().then(savedPerson => {
-      response.json(savedPerson);
-    })
+  person.save().then((savedPerson) => {
+    response.json(savedPerson)
+  })
 })
 
-app.delete('/api/persons/:id', (request, response) => {
+app.delete("/api/persons/:id", (request, response) => {
   const id = request.params.id
-  persons = persons.filter(resource => id !== resource.id)
+  persons = persons.filter((resource) => id !== resource.id)
   if (id) {
     response.status(204).end()
   } else {
@@ -86,7 +87,7 @@ app.delete('/api/persons/:id', (request, response) => {
 })
 
 const unknownEndpoint = (request, response) => {
-  response.status(404).send({ error: 'unknown endpoint' })
+  response.status(404).send({ error: "unknown endpoint" })
 }
 
 app.use(unknownEndpoint)
