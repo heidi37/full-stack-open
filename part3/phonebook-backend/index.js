@@ -47,10 +47,13 @@ app.get("/api/persons/:id", (request, response, next) => {
 })
 
 app.get("/info", (request, response) => {
-  const now = new Date()
-  response.send(`
-    <p>Phonebook has info for ${Person.length} people<p>
-    <p>${now.toString()}</p>`)
+  Person.countDocuments({}).then(count => {
+    const now = new Date()
+    response.send(`
+      <p>Phonebook has info for ${count} people</p>
+      <p>${now}</p>
+    `)
+  })
 })
 
 app.post("/api/persons", (request, response) => {
@@ -76,6 +79,25 @@ app.post("/api/persons", (request, response) => {
   person.save().then((savedPerson) => {
     response.json(savedPerson)
   })
+})
+
+app.put('/api/persons/:id', (request, response, next) => {
+  const { name, number } = request.body
+
+  Person.findById(request.params.id)
+    .then(person => {
+      if (!person) {
+        return response.status(404).end()
+      }
+
+      person.name = name
+      person.number = number
+
+      return person.save().then((updatedPerson) => {
+        response.json(updatedPerson)
+      })
+    })
+    .catch(error => next(error))
 })
 
 app.delete('/api/persons/:id', (request, response, next) => {
