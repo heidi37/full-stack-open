@@ -1,9 +1,9 @@
-require("dotenv").config()
-const express = require("express")
+require('dotenv').config()
+const express = require('express')
 const app = express()
-var morgan = require("morgan")
+var morgan = require('morgan')
 
-const Person = require("./models/person")
+const Person = require('./models/person')
 
 let persons = []
 
@@ -17,36 +17,36 @@ let persons = []
 
 // app.use(requestLogger)
 
-morgan.token("type", function (req, res) {
+morgan.token('type', function (req) {
   return JSON.stringify(req.body)
 })
 
 app.use(express.json())
 app.use(
-  morgan(":method :url :status :res[content-length] - :response-time ms :type"),
+  morgan(':method :url :status :res[content-length] - :response-time ms :type'),
 )
-app.use(express.static("dist"))
+app.use(express.static('dist'))
 
-app.get("/api/persons", (request, response) => {
+app.get('/api/persons', (request, response) => {
   Person.find({}).then((persons) => {
     response.json(persons)
   })
 })
 
-app.get("/api/persons/:id", (request, response, next) => {
+app.get('/api/persons/:id', (request, response, next) => {
   const id = request.params.id
-  const person = Person.findById(id)
-  .then((person) => {
-    if (person) {
-      response.json(person)
-    } else {
-      response.status(404).end()
-    }
-  })
-  .catch(error => next(error))
+  Person.findById(id)
+    .then((person) => {
+      if (person) {
+        response.json(person)
+      } else {
+        response.status(404).end()
+      }
+    })
+    .catch(error => next(error))
 })
 
-app.get("/info", (request, response) => {
+app.get('/info', (request, response) => {
   Person.countDocuments({}).then(count => {
     const now = new Date()
     response.send(`
@@ -56,12 +56,12 @@ app.get("/info", (request, response) => {
   })
 })
 
-app.post("/api/persons", (request, response, next) => {
+app.post('/api/persons', (request, response, next) => {
   const body = request.body
 
   if (persons.find((person) => person.name === body.name)) {
     return response.status(400).json({
-      error: "name must be unique",
+      error: 'name must be unique',
     })
   }
 
@@ -71,10 +71,10 @@ app.post("/api/persons", (request, response, next) => {
   })
 
   person.save()
-  .then((savedPerson) => {
-    response.json(savedPerson)
-  })
-  .catch(error => next(error))
+    .then((savedPerson) => {
+      response.json(savedPerson)
+    })
+    .catch(error => next(error))
 })
 
 app.put('/api/persons/:id', (request, response, next) => {
@@ -98,14 +98,14 @@ app.put('/api/persons/:id', (request, response, next) => {
 
 app.delete('/api/persons/:id', (request, response, next) => {
   Person.findByIdAndDelete(request.params.id)
-    .then(result => {
+    .then(() => {
       response.status(204).end()
     })
     .catch(error => next(error))
 })
 
 const unknownEndpoint = (request, response) => {
-  response.status(404).send({ error: "unknown endpoint" })
+  response.status(404).send({ error: 'unknown endpoint' })
 }
 
 app.use(unknownEndpoint)
