@@ -95,8 +95,9 @@ const App = () => {
       setNewNumber("")
     })
     .catch(error => {
+      setSuccessStatus("error")
       // this is the way to access the error message
-      console.log(error.response.data.error)
+      setSuccessMessage(error.response.data.error)
     })
   }
 
