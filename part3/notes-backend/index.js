@@ -6,8 +6,6 @@ const Note = require('./models/note')
 //Creates the Express app - a function that is used to create an Express application stored in the app variable:
 const app = express()
 
-let notes = []
-
 const requestLogger = (request, response, next) => {
   console.log('Method:', request.method)
   console.log('Path:  ', request.path)
@@ -35,15 +33,15 @@ app.get('/api/notes', (request, response) => {
 
 app.get('/api/notes/:id', (request, response, next) => {
   Note.findById(request.params.id)
-  .then(note => {
-    if (note) {
-    response.json(note)
-  } else {
-    response.status(404).end()
-  }
-  })
-  //If the next function is called with an argument, then the execution will continue to the error handler middleware.
-  .catch(error => next(error))
+    .then(note => {
+      if (note) {
+        response.json(note)
+      } else {
+        response.status(404).end()
+      }
+    })
+    //If the next function is called with an argument, then the execution will continue to the error handler middleware.
+    .catch(error => next(error))
 })
 
 app.post('/api/notes', (request, response, next) => {
@@ -60,7 +58,7 @@ app.post('/api/notes', (request, response, next) => {
     important: body.important || false,
   })
 
-    note.save()
+  note.save()
     .then(savedNote => {
       response.json(savedNote)
     })
@@ -88,7 +86,7 @@ app.put('/api/notes/:id', (request, response, next) => {
 
 app.delete('/api/notes/:id', (request, response, next) => {
   Note.findByIdAndDelete(request.params.id)
-    .then(result => {
+    .then(() => {
       response.status(204).end()
     })
     .catch(error => next(error))
