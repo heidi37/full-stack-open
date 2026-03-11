@@ -1,16 +1,17 @@
 //Imports
-require('dotenv').config()
 const express = require('express')
 const Note = require('./models/note')
+const logger = require('./utils/logger')
+const config = require('./utils/config')
 
 //Creates the Express app - a function that is used to create an Express application stored in the app variable:
 const app = express()
 
 const requestLogger = (request, response, next) => {
-  console.log('Method:', request.method)
-  console.log('Path:  ', request.path)
-  console.log('Body:  ', request.body)
-  console.log('---')
+  logger.info('Method:', request.method)
+  logger.info('Path:  ', request.path)
+  logger.info('Body:  ', request.body)
+  logger.info('---')
   next()
 }
 
@@ -100,7 +101,7 @@ app.use(unknownEndpoint)
 
 //error handler
 const errorHandler = (error, request, response, next) => {
-  console.error(error.message)
+  logger.error(error.message)
 
   if (error.name === 'CastError') {
     return response.status(400).send({ error: 'malformatted id' })
@@ -114,7 +115,6 @@ const errorHandler = (error, request, response, next) => {
 app.use(errorHandler)
 
 //Starts the server with app.listen()
-const PORT = process.env.PORT
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`)
+app.listen(config.PORT, () => {
+  logger.info(`Server running on port ${config.PORT}`)
 })
