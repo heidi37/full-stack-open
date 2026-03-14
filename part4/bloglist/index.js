@@ -1,9 +1,6 @@
 const express = require('express')
 const mongoose = require('mongoose')
-<<<<<<< HEAD
 require('dotenv').config()
-=======
->>>>>>> 1f1cf5d63bcacbca600e63ade519e5e74b511b04
 
 const app = express()
 
