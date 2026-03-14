@@ -35,11 +35,7 @@ app.post('/api/blogs', (request, response) => {
   })
 })
 
-<<<<<<< HEAD
 const PORT = process.env.PORT
-=======
-const PORT = 3003
->>>>>>> 1f1cf5d63bcacbca600e63ade519e5e74b511b04
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
