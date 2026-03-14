@@ -12,7 +12,7 @@ const blogSchema = mongoose.Schema({
 
 const Blog = mongoose.model('Blog', blogSchema)
 
-const mongoUrl = '***REMOVED***'
+const mongoUrl = process.env.MONGODB_URI
 mongoose.connect(mongoUrl, { family: 4 })
 
 app.use(express.json())
