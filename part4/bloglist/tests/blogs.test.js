@@ -2,17 +2,7 @@ const { test, describe } = require('node:test')
 const assert = require('node:assert')
 const listHelper = require('../utils/list_helper')
 
-describe('blogs', () => {
-test('dummy returns one', () => {
-  const blogs = []
-
-  const result = listHelper.dummy(blogs)
-  assert.strictEqual(result, 1)
-})
-})
-
-describe('total likes', () => {
-  const emptyList = []
+const emptyList = []
   const listWithOneBlog = [
     {
       _id: '5a422aa71b54a676234d17f8',
@@ -23,7 +13,7 @@ describe('total likes', () => {
       __v: 0
     }
   ]
-  const blogs = [
+const blogs = [
   {
     _id: "5a422a851b54a676234d17f7",
     title: "React patterns",
@@ -74,6 +64,17 @@ describe('total likes', () => {
   }  
 ]
 
+describe('blogs', () => {
+test('dummy returns one', () => {
+  const blogs = []
+
+  const result = listHelper.dummy(blogs)
+  assert.strictEqual(result, 1)
+})
+})
+
+describe('total likes', () => {  
+
   test('of empty list is zero', () => {
     const result = listHelper.totalLikes(emptyList)
     assert.strictEqual(result, 0)
@@ -85,7 +86,13 @@ describe('total likes', () => {
   })
 
   test('of a bigger list is calculated right', () => {
-    result = listHelper.totalLikes(blogs)
+    const result = listHelper.totalLikes(blogs)
     assert.strictEqual(result, 36)
   })
+})
+
+describe('favorite blog', () => {
+  test('blog with most likes', () => {
+    const result = listHelper.favoriteBlog(blogs)
+    assert.deepStrictEqual(result, "Canonical string reduction")})
 })

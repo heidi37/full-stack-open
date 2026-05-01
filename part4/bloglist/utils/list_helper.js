@@ -3,13 +3,19 @@ const dummy = (blogs) => {
 }
 
 const totalLikes = (blogsList) => {
-    const totalLikes=blogsList.reduce((accumulator, current) => {
+    return blogsList.reduce((accumulator, current) => {
       return accumulator + current.likes
     }, 0)
-    return totalLikes
+}
+
+const favoriteBlog = (blogsList) => {
+    return blogsList.reduce((max, current) => {
+      return current.likes > max.likes ? current : max
+    }).title
 }
 
 module.exports = {
   dummy,
   totalLikes,
+  favoriteBlog,
 }
