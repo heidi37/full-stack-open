@@ -61,7 +61,7 @@ const blogs = [
     url: "http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html",
     likes: 2,
     __v: 0
-  }  
+  }
 ]
 
 describe('blogs', () => {
@@ -94,5 +94,24 @@ describe('total likes', () => {
 describe('favorite blog', () => {
   test('blog with most likes', () => {
     const result = listHelper.favoriteBlog(blogs)
-    assert.deepStrictEqual(result, "Canonical string reduction")})
+    assert.deepStrictEqual(result, {
+    _id: "5a422b3a1b54a676234d17f9",
+    title: "Canonical string reduction",
+    author: "Edsger W. Dijkstra",
+    url: "http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html",
+    likes: 12,
+    __v: 0
+  })})
+})
+
+describe('most active author', () => {
+  test('author with most posts', () => {
+    const result = listHelper.mostBlogs(blogs)
+    assert.deepStrictEqual(result, { author: 'Robert C. Martin', blogs: 3 })})
+})
+
+describe('most liked author', () => {
+  test('author with most likes', () => {
+    const result = listHelper.mostLikes(blogs)
+    assert.deepStrictEqual(result, { author: 'Edsger W. Dijkstra', likes: 17 })})
 })
